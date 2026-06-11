@@ -46,8 +46,12 @@ def embed_query(query: str) -> list[float]:
     return vec
 
 
-def search(query: str, top_k: int = 5) -> list[dict[str, Any]]:
-    """语义检索:返回最相关的 top_k 个片段。top_k 钳制到 [1, 20]。"""
+def search(query: str, top_k: int = 5, min_similarity: float = 0.3) -> list[dict[str, Any]]:
+    """语义检索:返回最相关的 top_k 个片段。top_k 钳制到 [1, 20]。
+
+    min_similarity 透传给 RPC 第四参数,与 aisc SaaS 生产默认值保持一致(0.3)。
+    tool 层不暴露此参数,仅供命令行直调与测试覆盖零命中分支用。
+    """
     top_k = max(1, min(20, top_k))
     vec = embed_query(query)
 
@@ -57,6 +61,7 @@ def search(query: str, top_k: int = 5) -> list[dict[str, Any]]:
             "query_embedding": vec,
             "tenant_id": KB_TENANT_ID,
             "match_count": top_k,
+            "min_similarity": min_similarity,
         },
     ).execute()
     hits = rpc_resp.data or []

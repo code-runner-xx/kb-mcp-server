@@ -32,3 +32,7 @@ dist/
 .pytest_cache/
 .coverage
 htmlcov/
+
+# 本地私人文件(不进公开仓库)
+test4.py
+面试材料.md

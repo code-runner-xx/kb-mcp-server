@@ -216,6 +216,45 @@ embedding 与 RPC 正常 1-3s 完成,15s 是 5 倍余量;超时归 server 兜底
 
 ---
 
+## 🐍 自写 Client(协议两侧)
+
+除了 Claude Desktop / Inspector 这类现成客户端,本仓库还附带一个最小 Python Client `client_demo.py`,用官方 SDK 的 `stdio_client` + `ClientSession` 把 `server.py` 作为子进程拉起,**在同一 stdio 通道上把 Tools / Resources / Prompts 三类消息从客户端侧全覆盖**。
+
+前置:在仓库根目录跑,且 `.env` 已填真值(子进程 server 会继承父进程环境)。
+
+```powershell
+uv run python client_demo.py
+```
+
+预期输出(节选):
+
+```
+============================================================
+✅ 已连接 kb-mcp-server(stdio 子进程)
+============================================================
+
+[1/4] list_tools → 工具清单:
+  - search_knowledge_base: 语义检索知识库,返回与查询最相关的若干片段(含相似度与所属文档标题)。
+  - list_documents: 列出当前知识库的全部文档及元数据(id、标题、类型、状态、片段数、创建时间)。
+  - get_document_content: 按 document_id 拉取并拼接单篇文档全文。
+
+[2/4] call_tool('search_knowledge_base', ...) →
+  命中 3 条
+  首条 similarity     = 0.7240
+  首条 document_title = lantu-x10-manual
+  首条 content 前 100 字:...
+
+[3/4] read_resource('kb://documents') → 文档标题清单:
+  - lantu-x10-manual(chunk_count=...)
+
+[4/4] get_prompt('kb_qa', question='滤网怎么保养?') → 渲染后模板:
+  [user] 基于知识库回答以下问题。请先调用 search_knowledge_base 检索相关片段...
+```
+
+任何一步失败会直接 raise(非零退出码),便于 CI / 面试现场快速定位。
+
+---
+
 ## 📜 License
 
 [MIT](LICENSE)

@@ -16,6 +16,7 @@ from typing import Any
 from dotenv import load_dotenv
 from openai import OpenAI
 from supabase import create_client
+from supabase.lib.client_options import SyncClientOptions
 
 load_dotenv()
 
@@ -29,9 +30,19 @@ EMBEDDING_MODEL = "BAAI/bge-m3"
 EMBEDDING_DIM = 1024
 SILICONFLOW_BASE_URL = "https://api.siliconflow.cn/v1"
 CONTENT_TRUNCATE_LIMIT = 8000
+# 网络超时:embedding 与 RPC 正常 1-3s,15s 已是 5 倍余量;超时归 server 兜底"检索服务暂时不可用"
+HTTP_TIMEOUT_SECONDS = 15
 
-supabase_client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
-openai_client = OpenAI(api_key=SILICONFLOW_API_KEY, base_url=SILICONFLOW_BASE_URL)
+supabase_client = create_client(
+    SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY,
+    options=SyncClientOptions(postgrest_client_timeout=HTTP_TIMEOUT_SECONDS),
+)
+openai_client = OpenAI(
+    api_key=SILICONFLOW_API_KEY,
+    base_url=SILICONFLOW_BASE_URL,
+    timeout=HTTP_TIMEOUT_SECONDS,
+)
 
 
 def embed_query(query: str) -> list[float]:

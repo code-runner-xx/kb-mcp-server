@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "knowledge-base": {
+      "command": "C:\\Users\\<你的用户名>\\.local\\bin\\uv.exe",
+      "args": [
+        "--directory",
+        "<kb-mcp-server 仓库的绝对路径,双反斜杠分隔>",
+        "run",
+        "server.py"
+      ],
+      "env": {
+        "SUPABASE_URL": "<填你的 supabase project url>",
+        "SUPABASE_SERVICE_ROLE_KEY": "<填你的 supabase service role key>",
+        "SILICONFLOW_API_KEY": "<填你的 siliconflow api key>",
+        "KB_TENANT_ID": "<填你在 aisc 中的 user_id (uuid)>"
+      }
+    }
+  }
+}

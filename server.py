@@ -89,6 +89,43 @@ def get_document_content(document_id: str) -> str:
         return f"检索服务暂时不可用:{type(e).__name__}"
 
 
+@mcp.resource("kb://documents")
+def documents_snapshot() -> str:
+    """知识库文档清单的只读快照(JSON 字符串)。
+
+    与 list_documents tool 的区别:
+    - Resource:**客户端主动读取**的上下文数据,Desktop 用户可在"附件/资源"面板里
+      手动挂载;模型不会自动调用,适合作为对话起手的背景资料
+    - Tool:**模型决策调用**,模型在需要时自行触发(如用户问"知识库有什么")
+
+    返回与 list_documents 同结构的 JSON;空清单返回中文文案。
+    """
+    logger.info("kb://documents 资源被读取")
+    try:
+        docs = kb.list_docs()
+        if not docs:
+            return "知识库暂无文档"
+        return json.dumps(docs, ensure_ascii=False, default=str)
+    except ValueError as e:
+        return str(e)
+    except Exception as e:
+        logger.exception("kb://documents 读取失败")
+        return f"检索服务暂时不可用:{type(e).__name__}"
+
+
+@mcp.prompt()
+def kb_qa(question: str) -> str:
+    """知识库问答提示词模板:把用户原始问题包装成"先检索后作答 + 标注来源"的指令。
+
+    用法:在 Desktop "Prompts" 面板选择 kb_qa,填入 question,即发送为一条用户消息。
+    """
+    return (
+        f"基于知识库回答以下问题。请先调用 search_knowledge_base 检索相关片段,"
+        f"仅基于检索结果作答,不要编造;回答末尾列出来源文档标题。\n\n"
+        f"问题:{question}"
+    )
+
+
 if __name__ == "__main__":
     logger.info("kb-mcp-server 启动,传输模式=stdio")
     mcp.run()

@@ -1,17 +1,9 @@
 # kb-mcp-server
 
-> 把 [ai-customer-service-saas](https://github.com/) 的 pgvector 知识库检索能力封装为标准 **MCP Server**:Tools / Resources / Prompts 三类协议消息全覆盖,Claude Desktop / MCP Inspector / Cursor 等任意 MCP 客户端零代码接入。
+> 把 [ai-customer-service-saas](https://github.com/code-runner-xx/ai-customer-service-saas) 的 pgvector 知识库检索能力封装为标准 **MCP Server**:Tools / Resources / Prompts 三类协议消息全覆盖,Claude Desktop / MCP Inspector / Cursor 等任意 MCP 客户端零代码接入。
 
 <!-- TODO: 公开后补徽章 -->
 <!-- ![Python](https://img.shields.io/badge/python-3.11-blue) ![MCP](https://img.shields.io/badge/MCP-1.27-purple) ![License](https://img.shields.io/badge/license-MIT-green) -->
-
----
-
-## 📺 演示
-
-![demo](docs/demo.gif)
-
-> *上图:Claude Desktop 自然语言提问 → 自动调用 `search_knowledge_base` → 基于知识库作答并附来源文档。*
 
 ---
 
@@ -125,7 +117,7 @@ language sql stable as $$
 $$;
 ```
 
-> ℹ️ RLS 与完整业务 schema(聊天/反馈/订阅等)见 [ai-customer-service-saas 仓库](https://github.com/)。**本 SQL 仅为让本 MCP Server 的检索路径在你自己的 Supabase 项目中可复现**,不包含写入/管理/分析等业务表。Server 通过 Service Role Key 调用,会绕过 RLS,因此**所有 SQL 都显式带 `user_id = tenant_id` 过滤**,租户隔离不依赖 RLS。
+> ℹ️ RLS 与完整业务 schema(聊天/反馈/订阅等)见 [ai-customer-service-saas 仓库](https://github.com/code-runner-xx/ai-customer-service-saas)。**本 SQL 仅为让本 MCP Server 的检索路径在你自己的 Supabase 项目中可复现**,不包含写入/管理/分析等业务表。Server 通过 Service Role Key 调用,会绕过 RLS,因此**所有 SQL 都显式带 `user_id = tenant_id` 过滤**,租户隔离不依赖 RLS。
 
 </details>
 
@@ -224,25 +216,6 @@ embedding 与 RPC 正常 1-3s 完成,15s 是 5 倍余量;超时归 server 兜底
 
 ---
 
-## 📝 演示 GIF 录制指引
-
-把生成的 GIF 保存为 `docs/demo.gif`(已留占位),README 顶部「📺 演示」段会自动显示。推荐工具:**[ScreenToGif](https://www.screentogif.com/)**(免费 / Windows / 体积小)。
-
-**录制范围(建议 15-25 秒)**:
-1. Claude Desktop 已配置完毕的状态(输入框右下角有工具图标)
-2. 用户输入:`澜途 X10 怎么清洁地毯?`(或你知识库里有的话题)
-3. 模型自动触发 `search_knowledge_base` 工具确认弹窗(若有)→ 允许
-4. 模型给出基于知识库的答复 + 末尾列出 `lantu-x10-manual`(或你的来源文档)
-
-**ScreenToGif 设置**:
-- 帧率 10-15 FPS(够流畅且体积小)
-- 区域:框住 Desktop 对话窗口即可
-- 编码导出:**System Encoder**(质量好) → 保存为 `docs/demo.gif`,体积控制在 **5MB 以内**(GitHub README 体验更好)
-
-录完后 `git add docs/demo.gif && git commit -m "docs: 加演示 GIF" && git push`。
-
----
-
 ## 📜 License
 
 [MIT](LICENSE)
@@ -251,4 +224,4 @@ embedding 与 RPC 正常 1-3s 完成,15s 是 5 倍余量;超时归 server 兜底
 
 ## 🙏 致谢
 
-本 MCP Server 复用 [ai-customer-service-saas](https://github.com/) 已部署的 Supabase 向量库与 SiliconFlow embedding,实现"零迁移"接入。MCP 协议与 SDK 来自 [Anthropic 官方](https://modelcontextprotocol.io/)。
+本 MCP Server 复用 [ai-customer-service-saas](https://github.com/code-runner-xx/ai-customer-service-saas) 已部署的 Supabase 向量库与 SiliconFlow embedding,实现"零迁移"接入。MCP 协议与 SDK 来自 [Anthropic 官方](https://modelcontextprotocol.io/)。

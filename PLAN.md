@@ -7,13 +7,13 @@
 
 | Step | 内容 | 对应实施文档 | 预估 | 状态 |
 |---|---|---|---|---|
-| M1 | 仓库初始化 + 环境 + echo 最小闭环 | Day 0 | 半天 | ⬜ |
-| M2 | kb.py 四个纯函数(不碰 MCP) | Day 1 前半 | 半天 | ⬜ |
-| M3 | server.py 包装 3 个 Tool | Day 1 后半 | 半天 | ⬜ |
-| M4 | Claude Desktop 接入 + Resource + Prompt | Day 2 前半 | 半天 | ⬜ |
-| M5 | 错误处理 + 手测用例清单 | Day 2 后半 | 半天 | ⬜ |
-| M6 | README + 架构图 + 演示 GIF + 公开仓库 | Day 3 | 半天-1天 | ⬜ |
-| M7 | (加分,待定)Streamable HTTP + Python Client | Day 3 加分 | 半天 | ⏸ M6 验收后拍板 |
+| M1 | 仓库初始化 + 环境 + echo 最小闭环 | Day 0 | 半天 | ✅ |
+| M2 | kb.py 四个纯函数(不碰 MCP) | Day 1 前半 | 半天 | ✅ |
+| M3 | server.py 包装 3 个 Tool | Day 1 后半 | 半天 | ✅ |
+| M4 | Claude Desktop 接入 + Resource + Prompt | Day 2 前半 | 半天 | ✅ |
+| M5 | 错误处理 + 手测用例清单 | Day 2 后半 | 半天 | ✅ |
+| M6 | README + 架构图 + 演示 GIF + 公开仓库 | Day 3 | 半天-1天 | ✅ |
+| M7 | (加分,待定)Streamable HTTP + Python Client | Day 3 加分 | 半天 | 裁剪版完成(仅 Client,HTTP 未做) |
 
 ---
 
@@ -101,6 +101,7 @@
 
 M6 验收通过后由用户拍板是否启动。内容:`mcp.run(transport="streamable-http")` 起 HTTP 模式;写约 20 行 Python Client 脚本连自己的 Server 跑通完整流程。
 
+裁剪版完成(仅 Client,HTTP 未做)
 ---
 
 ## 与 aisc 的关系(边界声明)
